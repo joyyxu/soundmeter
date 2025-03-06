@@ -144,7 +144,7 @@ fun SoundUI(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Decibel Meter",
+            text = "Sound Meter",
             fontSize = 28.sp,
             modifier = Modifier.padding(bottom = 32.dp)
         )
@@ -167,7 +167,6 @@ fun SoundUI(
                     color = soundColor
                 )
 
-                // **Visual Audio Progress Bar**
                 LinearProgressIndicator(
                     progress = progress,
                     modifier = Modifier
