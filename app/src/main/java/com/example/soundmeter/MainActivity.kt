@@ -25,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlin.math.log10
 import kotlin.math.max
 import kotlin.math.sqrt
+import androidx.compose.ui.draw.clip
 
 class MainActivity : ComponentActivity() {
     private val SAMPLE_RATE = 44100
@@ -143,7 +144,7 @@ fun SoundUI(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Sound Meter",
+            text = "Decibel Meter",
             fontSize = 28.sp,
             modifier = Modifier.padding(bottom = 32.dp)
         )
@@ -160,23 +161,29 @@ fun SoundUI(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("Current Sound Level", fontSize = 18.sp, color = Color.Gray)
-                Text("${String.format("%.1f", currentLevel)} dB", fontSize = 36.sp, color = soundColor)
-                Box(
+                Text(
+                    "${String.format("%.1f", currentLevel)} dB",
+                    fontSize = 36.sp,
+                    color = soundColor
+                )
+
+                // **Visual Audio Progress Bar**
+                LinearProgressIndicator(
+                    progress = progress,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(30.dp)
-                        .padding(vertical = 8.dp)
-                        .background(Color.LightGray)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(progress)
-                            .fillMaxHeight()
-                            .background(soundColor)
-                    )
-                }
+                        .height(16.dp)
+                        .clip(MaterialTheme.shapes.medium),
+                    color = soundColor
+                )
+
                 if (currentLevel > threshold) {
-                    Text("WARNING: HIGH NOISE LEVEL!", color = Color.Red, fontSize = 16.sp, modifier = Modifier.padding(top = 8.dp))
+                    Text(
+                        "⚠️ WARNING: HIGH NOISE LEVEL! ⚠️",
+                        color = Color.Red,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
                 }
             }
         }
@@ -196,6 +203,7 @@ fun SoundUI(
             ) {
                 Text("Peak Sound Level", fontSize = 18.sp, color = Color.Gray)
                 Text("${String.format("%.1f", peakLevel)} dB", fontSize = 28.sp)
+
                 Button(
                     onClick = onResetPeak,
                     modifier = Modifier.padding(top = 8.dp)
@@ -206,3 +214,5 @@ fun SoundUI(
         }
     }
 }
+
+
